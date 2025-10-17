@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Tracker</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <link rel="icon" type="image/x-icon" href="./image/favicon-img.png">
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    
+    <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container-fluid main-container">
+            <span class="navbar-brand">
+                <i class="fas fa-dumbbell"></i> FitTrack Dashboard
+            </span>
+            <div class="text-muted">
+                <small><i class="far fa-calendar-alt"></i> <span id="currentDate"></span></small>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Dashboard Overview</h1>
+            <p>Monitor your fitness journey and track your progress towards your goals</p>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card calories">
+                <div class="stat-card-icon">
+                    <i class="fas fa-fire"></i>
+                </div>
+                <h3 id="totalCalories">0</h3>
+                <p>Total Calories Burned</p>
+            </div>
+            <div class="stat-card time">
+                <div class="stat-card-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3 id="totalTime">0</h3>
+                <p>Total Minutes Exercised</p>
+            </div>
+            <div class="stat-card workouts">
+                <div class="stat-card-icon">
+                    <i class="fas fa-running"></i>
+                </div>
+                <h3 id="totalWorkouts">0</h3>
+                <p>Total Workouts Completed</p>
+            </div>
+            <div class="stat-card streak">
+                <div class="stat-card-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h3 id="currentStreak">0</h3>
+                <p>Current Day Streak</p>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="row">
+            <!-- Left Column: Input Form -->
+            <div class="col-lg-4">
+                <!-- Exercise Input Form -->
+                <div class="dashboard-card">
+                    <h4><i class="fas fa-plus-circle"></i> Log New Workout</h4>
+                    <form id="exerciseForm">
+                        <div class="mb-3">
+                            <label class="form-label">Exercise Type</label>
+                            <select class="form-select" id="exerciseType" required>
+                                <option value="">Choose exercise type...</option>
+                                <option value="Running">Running</option>
+                                <option value="Cycling">Cycling</option>
+                                <option value="Swimming">Swimming</option>
+                                <option value="Weight Training">Weight Training</option>
+                                <option value="Yoga">Yoga</option>
+                                <option value="Walking">Walking</option>
+                                <option value="HIIT">HIIT</option>
+                                <option value="Pilates">Pilates</option>
+                                <option value="Boxing">Boxing</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Duration (minutes)</label>
+                            <input type="number" class="form-control" id="duration" min="1" placeholder="Enter duration"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Calories Burned</label>
+                            <input type="number" class="form-control" id="calories" min="1" placeholder="Enter calories"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Workout Date</label>
+                            <input type="date" class="form-control" id="workoutDate" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary-custom btn-custom w-100">
+                            <i class="fas fa-check"></i> Save Workout
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Recent Workouts -->
+                <div class="dashboard-card">
+                    <h4><i class="fas fa-history"></i> Recent Activity</h4>
+                    <div class="exercise-log" id="exerciseLog">
+                        <div class="empty-state">
+                            <i class="fas fa-clipboard-list"></i>
+                            <p>No workouts logged yet. Start tracking your fitness journey!</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-success-custom btn-custom w-100 mt-3" id="exportBtn">
+                        <i class="fas fa-download"></i> Export to CSV
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Column: Charts and Goals -->
+            <div class="col-lg-8">
+                <!-- Weekly Goals -->
+                <div class="dashboard-card">
+                    <h4><i class="fas fa-bullseye"></i> Weekly Goals & Progress</h4>
+
+                    <div class="goal-inputs">
+                        <div class="row">
+                            <div class="col-md-5 mb-3 mb-md-0">
+                                <label class="form-label">Weekly Time Goal (min)</label>
+                                <input type="number" class="form-control" id="timeGoal" value="150" min="1">
+                            </div>
+                            <div class="col-md-5 mb-3 mb-md-0">
+                                <label class="form-label">Weekly Calorie Goal</label>
+                                <input type="number" class="form-control" id="calorieGoal" value="2000" min="1">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label d-none d-md-block">&nbsp;</label>
+                                <button class="btn btn-info-custom btn-custom w-100" id="updateGoals">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="goal-section">
+                        <h5><i class="fas fa-clock"></i> Workout Time Progress</h5>
+                        <div class="progress-info">
+                            <span id="weeklyTimeText">0 / 150 minutes</span>
+                            <span class="percentage" id="weeklyTimePercent">0%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-success" id="timeProgress" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="goal-section">
+                        <h5><i class="fas fa-fire"></i> Calorie Burn Progress</h5>
+                        <div class="progress-info">
+                            <span id="weeklyCalorieText">0 / 2000 calories</span>
+                            <span class="percentage" id="weeklyCaloriePercent">0%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-warning" id="calorieProgress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity Chart -->
+                <div class="dashboard-card">
+                    <h4><i class="fas fa-chart-line"></i> 7-Day Activity Trend</h4>
+                    <div class="chart-container">
+                        <canvas id="activityChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Exercise Distribution -->
+                <div class="dashboard-card">
+                    <h4><i class="fas fa-chart-pie"></i> Exercise Distribution</h4>
+                    <div class="chart-container">
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.0/chart.umd.min.js"></script>
+
+    <script src="main.js"></script>
+
+
+</body>
+
+</body>
+</html>
